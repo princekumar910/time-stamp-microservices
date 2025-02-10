@@ -24,16 +24,20 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/", function (req, res) {
+  let currentDate = new Date()
+  res.json({"unix": currentDate.getTime(), "utc": `${currentDate}`});
+});
 
 app.get("/api/:slug?" , (req, res)=>{
   let calcDate = isNaN(req.params.slug) ? req.params.slug : parseInt(req.params.slug) 
-   console.log(typeof calcDate) ;
-  let currentDate = new Date(calcDate);
-  let validResponse = {"unix" : currentDate.getTime() , "utc" : currentDate.toUTCString()}
+  let date = new Date(calcDate);
   
+  let errorResponse = {"error": `${date}`}
+  let validResponse = {"unix" : date.getTime() , "utc" : date.toUTCString() }
   
+  date == "Invalid Date" ? res.json(errorResponse) : res.json(validResponse); 
    
-    res.json({"unix":1451001600000,"utc":"Fri, 25 Dec 2015 00:00:00 GMT"})
   
 })
 
